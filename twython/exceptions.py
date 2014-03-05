@@ -17,8 +17,9 @@ class TwythonError(Exception):
     from twython import TwythonError, TwythonRateLimitError, TwythonAuthError
 
     """
-    def __init__(self, msg, error_code=None, retry_after=None):
+    def __init__(self, msg, error_code=None, retry_after=None, response=None):
         self.error_code = error_code
+        #self.response = response
 
         if error_code is not None and error_code in TWITTER_HTTP_STATUS_CODE:
             msg = 'Twitter API returned a %s (%s), %s' % \

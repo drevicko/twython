@@ -142,7 +142,7 @@ class Twython(EndpointsMixin, object):
         try:
             response = func(url, **requests_args)
         except requests.RequestException as e:
-            raise TwythonError(str(e))
+            raise TwythonError("Failed to send request: %s"%str(e))
         content = response.content.decode('utf-8')
 
         # create stash for last function intel
@@ -194,7 +194,7 @@ class Twython(EndpointsMixin, object):
                                 retry_after=response.headers.get('retry-after'))
 
         # if we have a json error here, then it's not an official Twitter API error
-        if json_error and not response.status_code in (200, 201, 202):  # pragma: no cover
+        if json_error: # and not response.status_code in (200, 201, 202):  # pragma: no cover
             raise TwythonError('Response was not valid JSON, unable to decode.')
 
         return content
