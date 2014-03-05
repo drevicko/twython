@@ -388,7 +388,7 @@ class Twython(EndpointsMixin, object):
         )
         return self.cursor(self.search, q=search_query, **params)
 
-    def cursor(self, function, **params):
+    def cursor(self, function, returnPages = False, **params):
         """Returns a generator for results that match a specified query.
 
         :param function: Instance of a Twython function (Twython.get_home_timeline, Twython.search)
@@ -419,8 +419,11 @@ class Twython(EndpointsMixin, object):
             else:
                 results = content
 
-            for result in results:
-                yield result
+            if returnPages:
+                yield results
+            else:
+                for result in results:
+                    yield result
 
             if function.iter_mode == 'cursor' and content['next_cursor_str'] == '0':
                 raise StopIteration
